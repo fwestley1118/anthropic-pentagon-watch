@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anthropic vs. Pentagon — Cyber Explorer Watch</title>
+<style>
+:root {
+  --bg:#08101d; --panel:#0f1b2e; --panel2:#13223a; --text:#eef5ff; --muted:#9db0ca;
+  --line:#243b5d; --cyan:#3ed6c5; --amber:#ffbf47; --red:#ff6577; --green:#68d391; --blue:#6da8ff;
+  --shadow:0 18px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% -5%,#15325a 0,transparent 30%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:var(--cyan)}
+.shell{max-width:1280px;margin:auto;padding:28px}
+.hero{display:grid;grid-template-columns:1.6fr .9fr;gap:22px;align-items:stretch}
+.card{background:linear-gradient(180deg,rgba(19,34,58,.95),rgba(12,24,42,.96));border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.hero-main{padding:30px;position:relative;overflow:hidden}
+.hero-main:after{content:"";position:absolute;right:-80px;top:-100px;width:260px;height:260px;border-radius:50%;border:38px solid rgba(62,214,197,.08)}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:800}
+h1{font-size:clamp(30px,5vw,58px);line-height:.98;margin:14px 0 16px;max-width:800px}
+.lead{color:var(--muted);max-width:760px;font-size:17px;line-height:1.6}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.badge{border:1px solid var(--line);padding:8px 11px;border-radius:999px;font-size:12px;background:#0b1729}
+.badge.watch{border-color:#8a6720;color:#ffd783;background:#2b210d}
+.badge.confirmed{border-color:#275d57;color:#8ff5e9;background:#0c2726}
+.hero-side{padding:24px;display:flex;flex-direction:column;justify-content:space-between}
+.state-title{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+.state-big{font-size:34px;font-weight:900;margin:10px 0;color:var(--amber)}
+.state-list{display:grid;gap:12px;margin-top:15px}
+.state-item{display:grid;grid-template-columns:12px 1fr;gap:10px;align-items:start;color:var(--muted);font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--amber);margin-top:5px}
+.toolbar{margin:22px 0;display:flex;gap:10px;flex-wrap:wrap}
+button,.button{border:1px solid var(--line);background:#0e1a2c;color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:700}
+button:hover,.button:hover{border-color:var(--cyan)}
+button.active{background:var(--cyan);color:#03201d;border-color:var(--cyan)}
+.grid{display:grid;grid-template-columns:1.3fr .8fr;gap:22px}
+.section{padding:24px}
+.section h2{margin:0 0 7px;font-size:22px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.timeline{position:relative;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:7px;top:4px;bottom:8px;width:2px;background:var(--line)}
+.event{position:relative;padding:0 0 26px 22px}
+.event:before{content:"";position:absolute;left:-24px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid var(--panel)}
+.event[data-type="Government action"]:before{background:var(--red)}
+.event[data-type="Litigation"]:before{background:var(--amber)}
+.event[data-type="Current state"]:before{background:var(--cyan)}
+.date{font-size:12px;color:var(--cyan);font-weight:800;letter-spacing:.06em}
+.event h3{margin:5px 0 7px;font-size:18px}
+.event p{margin:0;color:var(--muted);line-height:1.5}
+.meta{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-size:11px;padding:5px 8px;border-radius:999px;border:1px solid var(--line);color:#c6d4e8}
+.trigger-grid{display:grid;gap:12px}
+.trigger{border:1px solid var(--line);border-radius:15px;padding:16px;background:rgba(8,16,29,.42)}
+.trigger-head{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.trigger h3{font-size:15px;margin:0}
+.status{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.status.WATCH{background:#2b210d;color:#ffd783}
+.status.CROSSED{background:#3b1720;color:#ff93a1}
+.status.MATERIAL-CHANGE{background:#132f42;color:#87cfff}
+.trigger p{color:var(--muted);font-size:13px;line-height:1.5;margin:9px 0 0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+.kpi{padding:18px}
+.kpi strong{display:block;font-size:28px}
+.kpi span{color:var(--muted);font-size:12px}
+.note{margin-top:22px;padding:18px;border-left:4px solid var(--cyan);background:#0a1727;color:var(--muted);border-radius:0 12px 12px 0;line-height:1.55}
+.footer{color:var(--muted);font-size:12px;padding:24px 0 6px;text-align:center}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-box{max-width:700px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.modal-close{float:right}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-bottom:18px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+@media(max-width:850px){.hero,.grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.shell{padding:16px}}
+@media print{body{background:#fff;color:#111}.card{box-shadow:none;background:#fff;border-color:#ccc}.toolbar{display:none}.lead,.sub,.event p,.trigger p,.footer,.state-item{color:#444}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <section class="hero">
+    <div class="card hero-main">
+      <div class="eyebrow">Cyber Explorer intelligence watch</div>
+      <h1>Anthropic vs. Pentagon</h1>
+      <p class="lead">An interactive, source-linked view of the Claude military-use dispute, its legal timeline, the supply-chain-risk designation, and the three signals that now matter most to Defense Industrial Base programs.</p>
+      <div class="badges">
+        <span class="badge watch">WATCH ACTIVE</span>
+        <span class="badge confirmed">Verified-source baseline</span>
+        <span class="badge">Last curated: July 12, 2026</span>
+      </div>
+    </div>
+    <aside class="card hero-side">
+      <div>
+        <div class="state-title">Current state</div>
+        <div class="state-big">Decision Pending</div>
+        <div class="state-list">
+          <div class="state-item"><span class="dot"></span><span>D.C. Circuit oral argument completed May 19, 2026.</span></div>
+          <div class="state-item"><span class="dot"></span><span>No merits ruling included in this verified baseline.</span></div>
+          <div class="state-item"><span class="dot"></span><span>No new canonical federal implementation document or public contractor flow-down artifact confirmed.</span></div>
+        </div>
+      </div>
+      <button onclick="window.print()">Print / Save PDF</button>
+    </aside>
+  </section>
+
+  <section class="kpis">
+    <div class="card kpi"><strong>7</strong><span>Verified timeline points</span></div>
+    <div class="card kpi"><strong>3</strong><span>Primary watch triggers</span></div>
+    <div class="card kpi"><strong>1</strong><span>Historical trigger crossed</span></div>
+    <div class="card kpi"><strong>0</strong><span>New contractor artifacts confirmed</span></div>
+  </section>
+
+  <div class="toolbar">
+    <button class="active" data-filter="All">All events</button>
+    <button data-filter="Policy">Policy</button>
+    <button data-filter="Government action">Government action</button>
+    <button data-filter="Litigation">Litigation</button>
+    <button data-filter="Current state">Current state</button>
+    <button onclick="exportData()">Export JSON</button>
+  </div>
+
+  <main class="grid">
+    <section class="card section">
+      <h2>Dispute timeline</h2>
+      <div class="sub">Select an event for detail, significance, and source.</div>
+      <div class="legend">
+        <span><i style="background:var(--blue)"></i>Policy</span>
+        <span><i style="background:var(--red)"></i>Government action</span>
+        <span><i style="background:var(--amber)"></i>Litigation</span>
+        <span><i style="background:var(--cyan)"></i>Current state</span>
+      </div>
+      <div id="timeline" class="timeline"></div>
+    </section>
+
+    <aside class="card section">
+      <h2>Trigger matrix</h2>
+      <div class="sub">Daily reporting should focus here. Historical triggers return only when materially changed.</div>
+      <div id="triggers" class="trigger-grid"></div>
+      <div class="note"><strong>Analytic boundary:</strong> media descriptions of a memo are not treated as canonical publication. A Trigger 2 document must be traceable to an official government source or downloadable official artifact.</div>
+    </aside>
+  </main>
+
+  <div class="footer">Cyber Explorer public research dashboard. No employer or internal community affiliation. Verify source documents before operational use.</div>
+</div>
+
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">Close</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const timelineData = [{"date": "2026-02-26", "label": "Negotiations break into public view", "type": "Policy", "status": "confirmed", "severity": 2, "summary": "Anthropic publicly states that negotiations with the Pentagon have reached an impasse over two requested restrictions: mass domestic surveillance and fully autonomous weapons.", "why": "The disagreement moves from contract negotiation into a public contest over vendor guardrails and military decision authority.", "source": "Anthropic statement", "url": "https://www.anthropic.com/news/statement-department-of-war"}, {"date": "2026-02-27", "label": "Pentagon designation direction announced", "type": "Government action", "status": "confirmed", "severity": 4, "summary": "Anthropic says the Secretary of Defense announced direction to designate the company a supply-chain risk.", "why": "The dispute shifts from policy friction into potential procurement exclusion and contractor impact.", "source": "Anthropic statement on Secretary comments", "url": "https://www.anthropic.com/news/statement-comments-secretary-war"}, {"date": "2026-03-05", "label": "Formal designation letter received", "type": "Government action", "status": "confirmed", "severity": 5, "summary": "Anthropic states that it received a letter confirming designation as a supply-chain risk. Reuters reports the designation was effective immediately and affected contractor use for U.S. military work.", "why": "This is the clearest confirmed trigger crossing: formal government action with direct DIB implications.", "source": "Anthropic / Reuters", "url": "https://www.anthropic.com/news/where-stand-department-war"}, {"date": "2026-03-10", "label": "Anthropic files suit", "type": "Litigation", "status": "confirmed", "severity": 4, "summary": "Anthropic files litigation challenging the designation and related restrictions.", "why": "The dispute becomes a precedent-setting legal test of supply-chain-risk authority applied to a domestic frontier-model provider.", "source": "Reuters", "url": "https://www.reuters.com/world/anthropic-sues-block-pentagon-blacklisting-over-ai-use-restrictions-2026-03-09/"}, {"date": "2026-04-08", "label": "Stay request denied", "type": "Litigation", "status": "confirmed", "severity": 3, "summary": "The D.C. Circuit denies Anthropic's request to pause the designation while the case proceeds. The ruling is not a final merits decision.", "why": "The designation remains operational while judicial review continues.", "source": "Reuters", "url": "https://www.reuters.com/world/us-court-declines-block-pentagons-anthropic-blacklisting-now-2026-04-08/"}, {"date": "2026-05-19", "label": "D.C. Circuit oral argument", "type": "Litigation", "status": "confirmed", "severity": 4, "summary": "A D.C. Circuit panel hears oral argument in Anthropic PBC v. United States Department of War.", "why": "The case is fully argued; the next major legal signal is a merits or other dispositive ruling.", "source": "U.S. Court of Appeals for the D.C. Circuit", "url": "https://media.cadc.uscourts.gov/recordings/bydate/recent"}, {"date": "2026-07-12", "label": "Current posture", "type": "Current state", "status": "current", "severity": 3, "summary": "No merits decision is identified in the current public record used for this dashboard. No canonical DoD/OSD/DoD CIO/DPC/DPAP publication or public contractor implementation artifact is included as newly confirmed.", "why": "The WATCH remains centered on the court ruling, official implementation or rescission guidance, and contractor-facing flow-down artifacts.", "source": "Cyber Explorer verified watch baseline", "url": ""}];
+const triggerData = [{"id": "T1", "name": "D.C. Circuit merits or dispositive ruling", "state": "WATCH", "level": 1, "detail": "No merits decision identified. Oral argument occurred May 19, 2026."}, {"id": "T2", "name": "Canonical federal implementation or rescission document", "state": "WATCH", "level": 1, "detail": "No verified public DoD/OSD/DoD CIO/DPC/DPAP memo, EO, Federal Register notice, or downloadable government PDF included as newly confirmed."}, {"id": "T3", "name": "Contractor implementation artifacts", "state": "WATCH", "level": 1, "detail": "No verified public clauses, task-order language, customer letters, certifications, attestations, AI inventories, or reporting requirements included as newly confirmed."}, {"id": "H1", "name": "Formal supply-chain-risk designation", "state": "CROSSED", "level": 5, "detail": "Historically crossed in March 2026; retained as context, not a daily primary trigger."}, {"id": "H2", "name": "Industry or operational consequences", "state": "MATERIAL-CHANGE ONLY", "level": 2, "detail": "Revisit only if a major integrator, mission owner, or enclave reports material change."}];
+let currentFilter = "All";
+
+function renderTimeline() {
+  const root = document.getElementById("timeline");
+  const items = timelineData.filter(e => currentFilter === "All" || e.type === currentFilter);
+  root.innerHTML = items.map((e,i) => `
+    <article class="event" data-type="${e.type}" tabindex="0" role="button" onclick="showEvent('${e.date}')" onkeydown="if(event.key==='Enter')showEvent('${e.date}')">
+      <div class="date">${new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})}</div>
+      <h3>${e.label}</h3>
+      <p>${e.summary}</p>
+      <div class="meta"><span class="pill">${e.type}</span><span class="pill">${e.status}</span></div>
+    </article>`).join("");
+}
+function renderTriggers() {
+  document.getElementById("triggers").innerHTML = triggerData.map(t => `
+    <div class="trigger">
+      <div class="trigger-head"><h3>${t.id} — ${t.name}</h3><span class="status ${t.state.replaceAll(' ','-')}">${t.state}</span></div>
+      <p>${t.detail}</p>
+    </div>`).join("");
+}
+function showEvent(date) {
+  const e = timelineData.find(x=>x.date===date);
+  document.getElementById("modalContent").innerHTML = `
+    <div class="eyebrow">${e.type}</div>
+    <h2>${e.label}</h2>
+    <p style="color:var(--muted);line-height:1.6">${e.summary}</p>
+    <h3>Why it matters</h3>
+    <p style="color:var(--muted);line-height:1.6">${e.why}</p>
+    <p><strong>Source:</strong> ${e.url ? `<a href="${e.url}" target="_blank" rel="noopener">${e.source}</a>` : e.source}</p>`;
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal(evt) {
+  if(!evt || evt.target.id==="modal" || evt.target.classList.contains("modal-close")) document.getElementById("modal").classList.remove("open");
+}
+document.querySelectorAll("[data-filter]").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active"); currentFilter=btn.dataset.filter; renderTimeline();
+}));
+function exportData() {
+  const payload = {generated:"2026-07-12", timeline:timelineData, triggers:triggerData};
+  const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="anthropic-pentagon-watch.json"; a.click(); URL.revokeObjectURL(a.href);
+}
+renderTimeline(); renderTriggers();
+</script>
+</body>
+</html>
