@@ -1,2 +1,2 @@
 # anthropic-pentagon-watch
-Track history of thr Anthropic vs Pentagon dispute. 
+Track history of the Anthropic vs Pentagon dispute. 
